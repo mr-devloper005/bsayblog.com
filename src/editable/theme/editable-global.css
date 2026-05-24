@@ -1,0 +1,44 @@
+/*
+  Editable global theme layer.
+
+  Safe for UI editors / AI tools:
+  - Full site background
+  - Global text color
+  - Selection color
+  - Scrollbar feel
+  - Article body typography accents
+
+  Do not add data fetching, scripts, or route logic here.
+*/
+
+body {
+  background-color: var(--slot4-page-bg) !important;
+  color: var(--slot4-page-text) !important;
+  background-image: var(--slot4-body-gradient) !important;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--slot4-accent-fill) 22%, transparent);
+  color: var(--slot4-page-text);
+}
+
+::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--slot4-page-bg) 88%, white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--slot4-accent) 40%, transparent);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--slot4-accent) 62%, transparent);
+}
+
+.article-content h2 {
+  color: var(--slot4-accent);
+}
+
+.article-content a {
+  color: var(--slot4-accent-fill);
+}
