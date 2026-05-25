@@ -4,7 +4,7 @@ export type FooterLayoutKey = 'editorial-footer' | 'columns-footer' | 'dense-foo
 export type HomeLayoutKey = 'article-home' | 'listing-home' | 'image-profile-home' | 'classified-home'
 export type MotionPackKey = 'editorial-soft' | 'minimal' | 'studio-stagger' | 'utility-snappy'
 
-export type TaskKey = 'listing' | 'classified' | 'article' | 'image' | 'profile' | 'sbm'
+export type TaskKey = 'listing' | 'classified' | 'article' | 'image' | 'profile' | 'pdf' | 'sbm'
 
 export type TaskLayoutKey =
   | 'listing-directory'
@@ -17,6 +17,7 @@ export type TaskLayoutKey =
   | 'image-portfolio'
   | 'profile-creator'
   | 'profile-business'
+  | 'pdf-library'
   | 'sbm-curation'
   | 'sbm-library'
 
