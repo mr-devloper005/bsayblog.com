@@ -12,3 +12,9 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
+networks:
+  default:
+    name: slot4_net
+    external: true
+
