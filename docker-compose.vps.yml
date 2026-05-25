@@ -17,4 +17,3 @@ networks:
   default:
     name: slot4_net
     external: true
-
