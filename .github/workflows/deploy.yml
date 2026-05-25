@@ -65,9 +65,12 @@ jobs:
           set -euo pipefail
           printf '%s' "$APP_ENV_PRODUCTION" > .env.build
           node scripts/validate-env.mjs .env.build
-          set -a
-          . ./.env.build
-          set +a
+          while IFS='=' read -r key value; do
+            if [ -z "${key:-}" ] || [[ "$key" == \#* ]]; then
+              continue
+            fi
+            export "$key=$value"
+          done < .env.build
 
           built_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
