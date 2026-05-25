@@ -18,6 +18,9 @@ export type TaskLayoutKey =
   | 'profile-creator'
   | 'profile-business'
   | 'pdf-library'
+  | 'classified-grid'
+  | 'image-gallery'
+  | 'sbm-board'
   | 'sbm-curation'
   | 'sbm-library'
 
