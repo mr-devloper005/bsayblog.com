@@ -7,9 +7,9 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  return generateEditableDetailMetadata('listing', params)
+  return generateEditableDetailMetadata('classified', params)
 }
 
-export default async function ListingDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  return <EditableTaskDetailRoute task="listing" params={params} />
+export default async function ClassifiedDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  return <EditableTaskDetailRoute task="classified" params={params} />
 }

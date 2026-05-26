@@ -1,26 +1,19 @@
-import { TaskListPage } from '@/components/tasks/task-list-page'
-import { buildTaskMetadata } from '@/lib/seo'
-import { taskPageMetadata } from '@/config/site.content'
+import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
 
 export const revalidate = 3
 
-export const generateMetadata = () =>
-  buildTaskMetadata('sbm', {
-    path: '/sbm',
-    title: taskPageMetadata.sbm.title,
-    description: taskPageMetadata.sbm.description,
-  })
+export const generateMetadata = () => taskMetadata('sbm', '/sbm')
 
-export async function SocialBookmarkingTaskPage({
+export async function SocialBookmarkingPageTaskPage({
   searchParams,
   basePath = '/sbm',
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
   basePath?: string
 }) {
-  const resolved = (await searchParams) || {}
-  const page = Math.max(1, Math.floor(Number(resolved.page) || 1))
-  return <TaskListPage task="sbm" category={resolved.category} page={page} basePath={basePath} />
+  return <EditableTaskArchiveRoute task="sbm" searchParams={searchParams} basePath={basePath} />
 }
 
-export default SocialBookmarkingTaskPage
+export default SocialBookmarkingPageTaskPage
+
+export const SocialBookmarkingTaskPage = SocialBookmarkingPageTaskPage

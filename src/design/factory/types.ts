@@ -11,18 +11,18 @@ export type TaskLayoutKey =
   | 'listing-showcase'
   | 'classified-bulletin'
   | 'classified-market'
+  | 'classified-grid'
   | 'article-editorial'
   | 'article-journal'
   | 'image-masonry'
   | 'image-portfolio'
+  | 'image-gallery'
   | 'profile-creator'
   | 'profile-business'
   | 'pdf-library'
-  | 'classified-grid'
-  | 'image-gallery'
-  | 'sbm-board'
   | 'sbm-curation'
   | 'sbm-library'
+  | 'sbm-board'
 
 export type BrandPack = {
   key: BrandPackKey

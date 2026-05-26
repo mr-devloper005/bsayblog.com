@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { ArrowRight, Heart, Search } from 'lucide-react'
-import { ContentImage } from '@/components/shared/content-image'
 import type { SitePost } from '@/lib/site-connector'
 import type { HomeTimeSection } from '@/lib/task-data'
 import type { TaskKey } from '@/lib/site-config'
@@ -36,7 +35,7 @@ function MiniPoster({ post, href }: { post: SitePost; href: string }) {
     <Link href={href} className={`group block w-[230px] shrink-0 ${dc.motion.fade}`}>
       <article className="relative overflow-hidden rounded-[1.65rem] border border-black/[0.07] bg-white p-2 shadow-[0_18px_48px_rgba(47,29,22,0.10)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_22px_58px_rgba(47,29,22,0.16)]">
         <div className="relative aspect-[4/5] overflow-hidden rounded-[1.25rem] bg-[var(--slot4-media-bg)]">
-          <ContentImage src={getEditablePostImage(post)} alt={post.title} fill className="object-cover transition duration-700 group-hover:scale-105" />
+          <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
           <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_35%,rgba(0,0,0,0.72)_100%)]" />
           <span className="absolute left-3 top-3 rounded-full bg-white/92 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-[var(--slot4-page-text)] shadow-sm">
             Read
@@ -55,7 +54,7 @@ function FeatureTile({ post, href, index }: { post: SitePost; href: string; inde
   if (style === 0) {
     return (
       <Link href={href} className="group relative min-h-[360px] overflow-hidden rounded-[2rem] bg-[#24150f] p-5 text-white shadow-[0_24px_70px_rgba(47,29,22,0.18)] transition duration-300 hover:-translate-y-1">
-        <ContentImage src={getEditablePostImage(post)} alt={post.title} fill className="object-cover opacity-70 transition duration-700 group-hover:scale-105" />
+        <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover opacity-70 transition duration-700 group-hover:scale-105" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.78))]" />
         <div className="relative z-10 flex min-h-[320px] flex-col justify-end">
           <p className="text-[11px] font-black uppercase tracking-[0.28em] text-white/70">Featured</p>
@@ -69,7 +68,7 @@ function FeatureTile({ post, href, index }: { post: SitePost; href: string; inde
     return (
       <Link href={href} className={`group grid overflow-hidden rounded-[2rem] border ${pal.border} bg-white shadow-[0_18px_54px_rgba(47,29,22,0.10)] transition duration-300 hover:-translate-y-1 md:grid-cols-[0.82fr_1fr]`}>
         <div className="relative min-h-[190px] bg-[var(--slot4-media-bg)]">
-          <ContentImage src={getEditablePostImage(post)} alt={post.title} fill className="object-cover transition duration-700 group-hover:scale-105" />
+          <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
         </div>
         <div className="p-6">
           <p className={`text-[11px] font-black uppercase tracking-[0.26em] ${pal.accentText}`}>Spotlight {index + 1}</p>
@@ -83,7 +82,7 @@ function FeatureTile({ post, href, index }: { post: SitePost; href: string; inde
     <Link href={href} className={`group relative overflow-hidden rounded-[2rem] border ${pal.border} bg-[var(--slot4-accent-soft)] p-6 shadow-[0_18px_54px_rgba(47,29,22,0.08)] transition duration-300 hover:-translate-y-1`}>
       <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-white/55" />
       <div className="relative h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-sm">
-        <ContentImage src={getEditablePostImage(post)} alt={post.title} fill className="object-cover transition duration-700 group-hover:scale-110" />
+        <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-110" />
       </div>
       <p className={`mt-8 text-[11px] font-black uppercase tracking-[0.26em] ${pal.accentText}`}>Deep read</p>
       <h3 className="mt-3 line-clamp-4 text-2xl font-black leading-tight tracking-[-0.05em] text-[var(--slot4-page-text)]">{post.title}</h3>
@@ -96,7 +95,7 @@ function WideStoryCard({ post, href, index }: { post: SitePost; href: string; in
   return (
     <Link href={href} className={`group grid gap-4 overflow-hidden rounded-[1.75rem] border ${pal.border} bg-white p-3 shadow-[0_14px_42px_rgba(47,29,22,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_58px_rgba(47,29,22,0.14)] sm:grid-cols-[150px_minmax(0,1fr)]`}>
       <div className="relative aspect-[5/4] overflow-hidden rounded-[1.25rem] bg-[var(--slot4-media-bg)] sm:aspect-square">
-        <ContentImage src={getEditablePostImage(post)} alt={post.title} fill className="object-cover transition duration-700 group-hover:scale-105" />
+        <img src={getEditablePostImage(post)} alt={post.title} className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-105" />
         <span className="absolute bottom-3 left-3 rounded-full bg-black/72 px-3 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-white backdrop-blur">
           Pick {index + 1}
         </span>
@@ -128,7 +127,7 @@ function Rail({ children, className = '' }: { children: React.ReactNode; classNa
   return <div className={`${dc.layout.rail} ${className}`}>{children}</div>
 }
 
-export function EditableHomeHero({ primaryTask, primaryRoute, posts }: HomeSectionProps) {
+export function EditableHomeHero({ primaryTask, primaryRoute }: HomeSectionProps) {
   const heroTitle = pagesContent.home.hero.title.join(' ') || `Come for the ${taskLabel(primaryTask).toLowerCase()}. Stay for the connection.`
   return (
     <section className={`${pal.creamBg} relative overflow-hidden`}>
@@ -243,7 +242,7 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
       {feature ? (
         <div className="mx-auto grid max-w-7xl gap-8 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1fr)] lg:px-8">
           <Link href={postHref(primaryTask, feature, primaryRoute)} className="group relative min-h-[420px] overflow-hidden rounded-[2rem] bg-black text-white shadow-[0_18px_70px_rgba(0,0,0,0.16)]">
-            <ContentImage src={getEditablePostImage(feature)} alt={feature.title} fill className="object-cover opacity-65 transition duration-500 group-hover:scale-105" />
+            <img src={getEditablePostImage(feature)} alt={feature.title} className="absolute inset-0 h-full w-full object-cover opacity-65 transition duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.74))]" />
             <div className="relative z-10 flex min-h-[420px] flex-col justify-end p-7 sm:p-10">
               <p className="text-xs font-bold uppercase tracking-[0.24em] text-white/75">Featured stream</p>

@@ -1,219 +1,52 @@
 import Link from 'next/link'
-import { FileText, Building2, LayoutGrid, Tag, Image as ImageIcon, User, ArrowRight, Sparkles, type LucideIcon } from 'lucide-react'
-import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
-import { getFactoryState } from '@/design/factory/get-factory-state'
-
-const taskIcons: Record<TaskKey, any> = {
-  article: FileText,
-  listing: Building2,
-  sbm: LayoutGrid,
-  classified: Tag,
-  image: ImageIcon,
-  profile: User,
-  pdf: FileText,
-}
-
-const footerLinks = {
-  platform: SITE_CONFIG.tasks.filter((task) => task.enabled).map((task) => ({
-    name: task.label,
-    href: task.route,
-    icon: taskIcons[task.key] || LayoutGrid,
-  })),
-  company: [
-    { name: 'About Us', href: '/about' },
-    { name: 'Contact Us', href: '/contact' },
-    // { name: 'Team', href: '/team' },
-    // { name: 'Careers', href: '/careers' },
-    // { name: 'Blog', href: '/blog' },
-    // { name: 'Press', href: '/press' },
-  ],
-  resources: [
-    { name: 'Help Center', href: '/help' },
-    // { name: 'Community', href: '/community' },
-    // { name: 'Developers', href: '/developers' },
-    // { name: 'Status', href: '/status' },
-  ],
-  legal: [
-    { name: 'Cookies', href: '/cookies' },
-    // { name: 'Licenses', href: '/licenses' },
-  ],
-}
-
-const socialLinks: Array<{ name: string; href: string; icon: LucideIcon }> = []
+import type { CSSProperties } from 'react'
+import { ArrowUpRight } from 'lucide-react'
+import { SITE_CONFIG } from '@/lib/site-config'
+import { globalContent } from '@/editable/content/global.content'
 
 export function EditableFooter() {
-  const { recipe } = getFactoryState()
-  const enabledTasks = SITE_CONFIG.tasks.filter((task) => task.enabled)
-  const primaryTask = enabledTasks.find((task) => task.key === recipe.primaryTask) || enabledTasks[0]
-
-  if (recipe.homeLayout === 'article-home') {
-    const year = new Date().getFullYear()
-    const links = [
-      { name: 'About Us', href: '/about' },
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Help', href: '/help' },
-    ]
-    return (
-      <footer className="bg-[#222] px-4 py-12 text-center text-[13px] font-medium text-white sm:px-6">
-        <nav aria-label="Legal and resources">
-          <ul className="mx-auto flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
-            {links.map((item) => (
-              <li key={item.name}>
-                <Link href={item.href} className="hover:underline">
-                  {item.name}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-        <p className="mt-8 text-white/60">&copy; {year} {SITE_CONFIG.name}</p>
-      </footer>
-    )
-  }
-
-  if (recipe.footer === 'minimal-footer') {
-    return (
-      <footer className="border-t border-[#d7deca] bg-[#f4f6ef] text-[#1f2617]">
-        <div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div>
-            <p className="text-lg font-semibold">{SITE_CONFIG.name}</p>
-            <p className="mt-1 text-sm text-[#56604b]">{SITE_CONFIG.description}</p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {enabledTasks.slice(0, 5).map((task) => (
-              <Link key={task.key} href={task.route} className="rounded-lg border border-[#d7deca] bg-white px-3 py-2 text-sm font-medium text-[#1f2617] hover:bg-[#ebefdf]">
-                {task.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      </footer>
-    )
-  }
-
-  if (recipe.footer === 'dense-footer') {
-    return (
-      <footer className="border-t border-white/10 bg-[linear-gradient(180deg,#07111f_0%,#0b1a2e_100%)] text-white">
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr_1fr]">
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-7">
-              <Link href="/" className="inline-flex items-center rounded-2xl border border-white/12 bg-white/8 px-3 py-2">
-                <img
-                  src="/favicon.png?v=20260413"
-                  alt=""
-                  width={220}
-                  height={56}
-                  className="h-11 w-auto max-w-[220px] object-contain object-left"
-                />
-                <span className="sr-only">{SITE_CONFIG.name}</span>
-              </Link>
-              <p className="mt-5 max-w-md text-sm leading-7 text-slate-300">{SITE_CONFIG.description}</p>
-              {primaryTask ? (
-                <Link href={primaryTask.route} className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#8df0c8] px-4 py-2.5 text-sm font-semibold text-[#07111f] hover:bg-[#77dfb8]">
-                  Explore {primaryTask.label}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              ) : null}
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:col-span-2 lg:grid-cols-3">
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Surfaces</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-200">
-                  {footerLinks.platform.map((item: any) => (
-                    <li key={item.name}><Link href={item.href} className="flex items-center gap-2 hover:text-white">{item.icon ? <item.icon className="h-4 w-4" /> : null}{item.name}</Link></li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Resources</h3>
-                <ul className="mt-4 space-y-3 text-sm text-slate-200">
-                  {footerLinks.resources.map((item) => (
-                    <li key={item.name}><Link href={item.href} className="hover:text-white">{item.name}</Link></li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">Connect</h3>
-                <div className="mt-4 flex gap-3">
-                  {socialLinks.map((item) => (
-                    <Link key={item.name} href={item.href} target="_blank" rel="noopener noreferrer" className="rounded-full border border-white/10 bg-white/8 p-2.5 text-slate-200 hover:bg-white/12 hover:text-white">
-                      <item.icon className="h-4 w-4" />
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="mt-10 border-t border-white/10 pt-5 text-sm text-slate-400">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</div>
-        </div>
-      </footer>
-    )
-  }
-
-  if (recipe.footer === 'editorial-footer') {
-    return (
-      <footer className="border-t border-[#dbc6b6] bg-[linear-gradient(180deg,#fff9f0_0%,#fff1df_100%)] text-[#2f1d16]">
-        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr_0.9fr]">
-            <div>
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#dbc6b6] bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-[#72594a]">
-                <Sparkles className="h-3.5 w-3.5" />
-                Editorial desk
-              </div>
-              <h3 className="mt-5 text-3xl font-semibold tracking-[-0.04em]">{SITE_CONFIG.name}</h3>
-              <p className="mt-4 max-w-md text-sm leading-7 text-[#72594a]">{SITE_CONFIG.description}</p>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Sections</h4>
-              <ul className="mt-4 space-y-3 text-sm">
-                {footerLinks.platform.map((item: any) => (
-                  <li key={item.name}><Link href={item.href} className="hover:text-[#2f1d16]">{item.name}</Link></li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.24em] text-[#8b6d5a]">Company</h4>
-              <ul className="mt-4 space-y-3 text-sm">
-                {footerLinks.company.map((item) => (
-                  <li key={item.name}><Link href={item.href} className="hover:text-[#2f1d16]">{item.name}</Link></li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
-    )
-  }
+  const footerVars = { '--editable-footer-bg': 'var(--editable-page-bg, #fffaf3)', '--editable-footer-text': 'var(--editable-page-text, #241915)' } as CSSProperties
+  const taskLinks = SITE_CONFIG.tasks.filter((task) => task.enabled)
+  const year = new Date().getFullYear()
 
   return (
-    <footer className="border-t border-slate-200 bg-[linear-gradient(180deg,#ffffff_0%,#f8fafc_100%)] text-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr_0.8fr]">
-          <div>
-            <Link href="/" className="inline-flex items-center rounded-2xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
-              <img
-                src="/favicon.png?v=20260413"
-                alt=""
-                width={220}
-                height={56}
-                className="h-10 w-auto max-w-[220px] object-contain object-left"
-              />
-              <span className="sr-only">{SITE_CONFIG.name}</span>
-            </Link>
-            <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600">{SITE_CONFIG.description}</p>
-          </div>
-          {(['platform', 'company', 'resources', 'legal'] as const).map((section) => (
-            <div key={section}>
-              <h3 className="text-sm font-semibold uppercase tracking-[0.22em] text-slate-500">{section}</h3>
-              <ul className="mt-5 space-y-3 text-sm text-slate-600">
-                {footerLinks[section].map((item: any) => (
-                  <li key={item.name}><Link href={item.href} className="flex items-center gap-2 hover:text-slate-950">{item.icon ? <item.icon className="h-4 w-4" /> : null}{item.name}</Link></li>
-                ))}
-              </ul>
-            </div>
-          ))}
+    <footer style={footerVars} className="border-t border-[var(--editable-border)] bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
+      <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
+        <div>
+          <Link href="/" className="inline-flex items-center gap-3">
+            <span className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-2xl border border-[var(--editable-border)] bg-white">
+              <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-9 w-9 object-contain" />
+            </span>
+            <span className="text-lg font-black tracking-[-0.04em]">{SITE_CONFIG.name}</span>
+          </Link>
+          <p className="mt-4 max-w-md text-sm leading-7 opacity-70">{globalContent.footer?.description || SITE_CONFIG.description}</p>
         </div>
-        <div className="mt-12 border-t border-slate-200 pt-6 text-center text-sm text-slate-500">&copy; {new Date().getFullYear()} {SITE_CONFIG.name}. All rights reserved.</div>
+
+        <div>
+          <h3 className="text-xs font-black uppercase tracking-[0.22em] opacity-55">Explore</h3>
+          <div className="mt-4 grid gap-2">
+            {taskLinks.map((task) => (
+              <Link key={task.key} href={task.route} className="inline-flex items-center gap-2 text-sm font-bold opacity-75 hover:opacity-100">
+                {task.label} <ArrowUpRight className="h-3.5 w-3.5" />
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-xs font-black uppercase tracking-[0.22em] opacity-55">Site</h3>
+          <div className="mt-4 grid gap-2">
+            {[
+              ['About', '/about'],
+              ['Contact', '/contact'],
+            ].map(([label, href]) => (
+              <Link key={href} href={href} className="text-sm font-bold opacity-75 hover:opacity-100">{label}</Link>
+            ))}
+          </div>
+        </div>
+      </div>
+      <div className="border-t border-[var(--editable-border)] px-4 py-5 text-center text-xs font-bold opacity-55">
+        © {year} {SITE_CONFIG.name}. All rights reserved.
       </div>
     </footer>
   )

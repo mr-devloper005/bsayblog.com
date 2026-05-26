@@ -1,26 +1,19 @@
-import { TaskListPage } from '@/components/tasks/task-list-page'
-import { buildTaskMetadata } from '@/lib/seo'
-import { taskPageMetadata } from '@/config/site.content'
+import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
 
 export const revalidate = 3
 
-export const generateMetadata = () =>
-  buildTaskMetadata('listing', {
-    path: '/listing',
-    title: taskPageMetadata.listing.title,
-    description: taskPageMetadata.listing.description,
-  })
+export const generateMetadata = () => taskMetadata('listing', '/listing')
 
-export async function BusinessListingTaskPage({
+export async function BusinessListingPageTaskPage({
   searchParams,
   basePath = '/listing',
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
   basePath?: string
 }) {
-  const resolved = (await searchParams) || {}
-  const page = Math.max(1, Math.floor(Number(resolved.page) || 1))
-  return <TaskListPage task="listing" category={resolved.category} page={page} basePath={basePath} />
+  return <EditableTaskArchiveRoute task="listing" searchParams={searchParams} basePath={basePath} />
 }
 
-export default BusinessListingTaskPage
+export default BusinessListingPageTaskPage
+
+export const BusinessListingTaskPage = BusinessListingPageTaskPage
