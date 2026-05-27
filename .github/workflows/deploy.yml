@@ -117,14 +117,14 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "$VPS_SSH_KEY" > ~/.ssh/vps_key
           chmod 600 ~/.ssh/vps_key
-          ssh-keyscan -p "${VPS_PORT:-22}" -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          ssh-keyscan -p "${VPS_PORT:-22}" -H "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
           APP_ENV_B64="$(printf '%s' "$APP_ENV_PRODUCTION" | base64 -w 0)"
           printf -v APP_ENV_B64_Q '%q' "$APP_ENV_B64"
           printf -v DEPLOY_IMAGE_Q '%q' "$DEPLOY_IMAGE"
           printf -v REPO_NAME_Q '%q' "$REPO_NAME"
           printf -v GHCR_USERNAME_Q '%q' "$GHCR_USERNAME"
           printf -v GHCR_TOKEN_Q '%q' "$GHCR_TOKEN"
-          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" -o StrictHostKeyChecking=yes -o ConnectTimeout=30 \
+          ssh -i ~/.ssh/vps_key -p "${VPS_PORT:-22}" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=60 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 \
             "$VPS_USER@$VPS_HOST" \
             "APP_ENV_B64=$APP_ENV_B64_Q DEPLOY_IMAGE=$DEPLOY_IMAGE_Q REPO_NAME=$REPO_NAME_Q GHCR_USERNAME=$GHCR_USERNAME_Q GHCR_TOKEN=$GHCR_TOKEN_Q bash -s" <<'REMOTE'
           set -euo pipefail
@@ -143,6 +143,7 @@ jobs:
           printf '\nDEPLOY_IMAGE=%s\n' "$DEPLOY_IMAGE" >> .env
           chmod 600 .env
           echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+          docker network inspect slot4_net >/dev/null 2>&1 || docker network create slot4_net
           docker compose -f docker-compose.vps.yml pull
           docker compose -f docker-compose.vps.yml up -d --remove-orphans
           docker compose -f docker-compose.vps.yml ps
