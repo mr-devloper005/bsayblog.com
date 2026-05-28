@@ -15,6 +15,22 @@ jobs:
     if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     steps:
+      - name: Allow auto-merge only for trusted repo users
+        shell: bash
+        env:
+          AUTHOR_ASSOCIATION: ${{ github.event.pull_request.author_association }}
+        run: |
+          set -euo pipefail
+          case "$AUTHOR_ASSOCIATION" in
+            OWNER|MEMBER|COLLABORATOR)
+              echo "Trusted PR author association: $AUTHOR_ASSOCIATION"
+              ;;
+            *)
+              echo "Blocked auto-merge: untrusted PR author association: $AUTHOR_ASSOCIATION"
+              exit 1
+              ;;
+          esac
+
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -31,7 +47,7 @@ jobs:
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              src/editable/*|src/editable/**) ;;
+              src/editable/*|src/editable/**|public/*|public/**) ;;
               *) echo "Blocked auto-merge: non-editable file changed: $file"; disallowed=1 ;;
             esac
           done < changed-files.txt
