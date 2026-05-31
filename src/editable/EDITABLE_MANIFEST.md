@@ -1,53 +1,77 @@
 # Slot 4 Editable Manifest
 
-Slot 4 is now a reference-ready editable UI architecture.
+This folder is the only safe UI customization surface for Slot 4 sites.
 
-## Contract
+## Allowed To Edit
 
-- `src/app/**` is route wiring only.
-- `src/lib/**`, `src/config/**`, and APIs are data/SEO/routing logic only.
-- All visible UI should live inside `src/editable/**`.
-- Navbar, footer, body shell, page layouts, task archives, task details, cards, sections, theme, and copy are editable.
-- Normal UI PRs must only change `src/editable/**`.
+- `src/editable/pages/**`
+- `src/editable/content/**`
+- `src/editable/theme/**`
+- `src/editable/components/**`
 
-## Editable Surface
+## Do Not Edit
 
-```txt
-src/editable/shell/EditableSiteShell.tsx
-src/editable/shell/EditableNavbar.tsx
-src/editable/shell/EditableFooter.tsx
-src/editable/pages/HomePage.tsx
-src/editable/pages/LoginPage.tsx
-src/editable/pages/SignupPage.tsx
-src/editable/pages/TaskArchivePage.tsx
-src/editable/pages/TaskDetailPage.tsx
-src/editable/pages/*Page.tsx
-src/editable/cards/PostCards.tsx
-src/editable/sections/*.tsx
-src/editable/content/*.ts
-src/editable/theme/*.ts
-src/editable/theme/editable-global.css
-```
+- `src/app/**` except route files intentionally importing editable pages
+- `src/lib/**`
+- `src/config/**`
+- `src/components/**` outside `src/editable/components/**`
+- `src/design/**`
+- `src/app/api/**`
+- `.github/**`
+- `Dockerfile`
+- `docker-compose*.yml`
+- `package.json`
+- lockfiles
 
-## AI Redesign Rule
+## AI Redesign Workflow
 
-When giving this folder to AI, ask it to rewrite `src/editable/**` only. It may fully redesign body, nav, footer, page layout, cards, task pages, and detail pages. It must preserve exported component/function names and props.
+Give AI only this folder unless a build error requires more context.
+Ask for complete drop-in files only.
+Keep all exported component names and props compatible.
+Do not remove post loops, links, contact form, metadata exports, or task detail behavior.
 
-## Do Not Touch
+## Recommended AI Upload Set
 
-```txt
-src/app/**
-src/lib/**
-src/config/**
-src/components/**
-.github/**
-Dockerfile
-package.json
-next.config.*
-```
+For a full redesign:
 
-For one-time base infrastructure changes only:
+- `src/editable/pages/**`
+- `src/editable/content/pages.content.ts`
+- `src/editable/content/global.content.ts
+- `src/editable/content/tasks.config.ts``
+- `src/editable/content/tasks.config.ts`
+- `src/editable/theme/brand.config.ts`
+- `src/editable/theme/visual-system.ts`
+- `src/editable/components/LoadingStates.tsx`
+- `src/editable/components/EmptyStates.tsx`
+
+## Required Checks
+
+Run before PR:
 
 ```bash
-ALLOW_INFRASTRUCTURE_CHANGES=1 pnpm guard:editable
+pnpm guard:editable
+pnpm build
 ```
+
+## AI-Safe Layout V2
+
+For full visual redesigns, edit these files first:
+
+- `src/editable/sections/HomeSections.tsx`
+- `src/editable/sections/ArticleSections.tsx`
+- `src/editable/cards/PostCards.tsx`
+- `src/editable/layouts/design-contract.ts`
+- `src/editable/theme/brand.config.ts`
+- `src/editable/theme/visual-system.ts`
+- `src/editable/content/pages.content.ts`
+- `src/editable/content/task-pages.content.ts`
+
+Rules for AI edits:
+
+- Keep page files as data/composition shells.
+- Do not remove required exports from page files.
+- Do not replace dynamic `posts` props with static arrays.
+- Do not make cards narrower than `min-w-[280px]`.
+- Prefer editing sections/cards instead of touching fetch logic.
+
+- `src/editable/theme/editable-global.css` - full-site background, selection, scrollbar, and article-global visual CSS.

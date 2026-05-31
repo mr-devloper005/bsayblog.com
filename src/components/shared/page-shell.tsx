@@ -18,9 +18,9 @@ export function PageShell({
   children?: ReactNode
 }) {
   return (
-    <div className={cn('flex min-h-screen flex-col', isReaderPublicUi ? readerPageBg : 'bg-background')}>
+    <div className={cn('min-h-screen', isReaderPublicUi ? readerPageBg : 'bg-background')}>
       <NavbarShell />
-      <main className="flex-1">
+      <main>
         <section
           className={
             isReaderPublicUi

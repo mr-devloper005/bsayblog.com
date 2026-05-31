@@ -8,10 +8,17 @@ permissions:
   contents: read
   pull-requests: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   open-promotion-pr:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
       - name: Create or reuse dev to main PR
         env:
           GH_TOKEN: ${{ github.token }}
@@ -32,6 +39,7 @@ jobs:
           fi
 
           gh pr create \
+            --repo "$GITHUB_REPOSITORY" \
             --base main \
             --head dev \
             --title "Promote dev to main" \

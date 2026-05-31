@@ -3,6 +3,8 @@ import { execSync } from 'node:child_process'
 
 const allowedPrefixes = ['src/editable/', 'public/']
 const allowedExact = new Set([
+  'next-env.d.ts',
+  'pnpm-workspace.yaml',
   'src/app/page.tsx',
   'src/app/about/page.tsx',
   'src/app/contact/page.tsx',

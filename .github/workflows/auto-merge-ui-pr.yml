@@ -10,6 +10,9 @@ permissions:
   pull-requests: write
   checks: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   enable-auto-merge:
     if: ${{ !github.event.pull_request.draft }}
@@ -31,7 +34,7 @@ jobs:
               ;;
           esac
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -47,7 +50,7 @@ jobs:
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              src/editable/*|src/editable/**|public/*|public/**) ;;
+              src/editable/*|src/editable/**|public/*|public/**|next-env.d.ts|pnpm-workspace.yaml) ;;
               *) echo "Blocked auto-merge: non-editable file changed: $file"; disallowed=1 ;;
             esac
           done < changed-files.txt

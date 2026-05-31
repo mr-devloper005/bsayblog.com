@@ -10,6 +10,7 @@ const dryRun = args.has('--dry-run') || args.has('--check');
 const nearLossless = args.has('--near-lossless');
 const failOnLarge = args.has('--fail-on-large');
 const maxImageKb = Number(process.env.MAX_PUBLIC_IMAGE_KB || 750);
+const iconImageKb = Number(process.env.MAX_PUBLIC_ICON_KB || 1000);
 
 let sharp;
 try {
@@ -27,6 +28,19 @@ const stats = {
   savedBytes: 0,
   large: [],
 };
+
+function relativePublicPath(file) {
+  return path.relative(publicDir, file).replaceAll(path.sep, '/');
+}
+
+function isIconAsset(file) {
+  const relative = relativePublicPath(file);
+  return [
+    'favicon.png',
+    'favicon.ico',
+    'apple-icon.png',
+  ].includes(relative);
+}
 
 async function walk(dir) {
   let entries = [];
@@ -52,9 +66,10 @@ async function optimize(file) {
   const ext = path.extname(file).toLowerCase();
   const before = (await fs.stat(file)).size;
   stats.scanned += 1;
+  const limitKb = isIconAsset(file) ? iconImageKb : maxImageKb;
 
-  if (before / 1024 > maxImageKb) {
-    stats.large.push({ file, size: before });
+  if (before / 1024 > limitKb) {
+    stats.large.push({ file, size: before, limitKb });
   }
 
   // Strict default: no resize, no JPEG recompression. JPEG recompression is not truly lossless in sharp.
@@ -99,9 +114,9 @@ console.log(`Skipped/kept: ${stats.skipped}`);
 console.log(`Saved: ${format(stats.savedBytes)}`);
 
 if (stats.large.length) {
-  console.log(`\nLarge public images over ${maxImageKb}KB:`);
+  console.log('\nLarge public images over budget:');
   for (const item of stats.large) {
-    console.log(`- ${path.relative(root, item.file)} ${format(item.size)}`);
+    console.log(`- ${path.relative(root, item.file)} ${format(item.size)} (limit ${item.limitKb}KB)`);
   }
 }
 

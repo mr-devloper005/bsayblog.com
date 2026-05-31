@@ -1,6 +1,20 @@
-import ClassifiedDetailPage, { generateMetadata as generateClassifiedMetadata, generateStaticParams as generateClassifiedStaticParams } from '@/editable/pages/ClassifiedDetailPage'
+import { TaskDetailPage } from "@/components/tasks/task-detail-page";
+import { buildPostMetadata, buildTaskMetadata } from "@/lib/seo";
+import { fetchTaskPostBySlug } from "@/lib/task-data";
 
-export const revalidate = 3
-export const generateMetadata = generateClassifiedMetadata
-export const generateStaticParams = generateClassifiedStaticParams
-export default ClassifiedDetailPage
+export const revalidate = 3;
+
+export async function generateStaticParams() {
+  return [];
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const post = await fetchTaskPostBySlug("classified", resolvedParams.slug);
+  return post ? await buildPostMetadata("classified", post) : await buildTaskMetadata("classified");
+}
+
+export default async function ClassifiedDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  return <TaskDetailPage task="classified" slug={resolvedParams.slug} />;
+}
