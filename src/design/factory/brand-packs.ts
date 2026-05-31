@@ -1,6 +1,6 @@
 import type { BrandPack } from '@/design/factory/types'
 
-export const BRAND_PACKS: Record<BrandPack['key'], BrandPack> = {
+export const BRAND_PACKS: Record<string, BrandPack> = {
   'editorial-luxe': {
     key: 'editorial-luxe',
     displayName: 'Editorial Luxe',

@@ -176,7 +176,7 @@ export function Navbar() {
     )
   }
 
-  const style = variantClasses[recipe.navbar]
+  const style = variantClasses[recipe.navbar as keyof typeof variantClasses] || variantClasses['compact-bar']
   const isFloating = recipe.navbar === 'floating-bar'
   const isEditorial = recipe.navbar === 'editorial-bar'
   const isUtility = recipe.navbar === 'utility-bar'
