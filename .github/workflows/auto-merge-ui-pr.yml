@@ -56,11 +56,64 @@ jobs:
           done < changed-files.txt
           exit "$disallowed"
 
-      - name: Enable auto-merge after required checks pass
+      - name: Merge safe PR to dev, then promote dev to main
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         shell: bash
         run: |
           set -euo pipefail
-          gh pr merge "$PR_NUMBER" --auto --squash --delete-branch
+
+          for attempt in {1..60}; do
+            checks_json="$(gh pr checks "$PR_NUMBER" --json name,state,bucket)"
+            failed_count="$(jq '[.[] | select(.bucket == "fail" or .bucket == "cancel")] | length' <<<"$checks_json")"
+            pending_count="$(jq '[.[] | select(.name != "enable-auto-merge" and .bucket != "pass" and .bucket != "skipping")] | length' <<<"$checks_json")"
+
+            if [[ "$failed_count" != "0" ]]; then
+              echo "Required/visible checks failed:"
+              jq -r '.[] | select(.bucket == "fail" or .bucket == "cancel") | "- \(.name): \(.bucket)"' <<<"$checks_json"
+              exit 1
+            fi
+
+            if [[ "$pending_count" == "0" ]]; then
+              echo "Checks are ready."
+              break
+            fi
+
+            echo "Waiting for checks to complete... attempt $attempt"
+            sleep 10
+          done
+
+          gh pr merge "$PR_NUMBER" --squash --delete-branch
+
+          for attempt in {1..30}; do
+            ahead_by="$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...dev" --jq '.ahead_by')"
+            if [[ "$ahead_by" != "0" ]]; then
+              break
+            fi
+            echo "Waiting for dev to move ahead of main... attempt $attempt"
+            sleep 5
+          done
+
+          ahead_by="$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...dev" --jq '.ahead_by')"
+          if [[ "$ahead_by" == "0" ]]; then
+            echo "No promotion needed."
+            exit 0
+          fi
+
+          existing_pr="$(gh pr list --base main --head dev --state open --json number --jq '.[0].number // empty')"
+          if [[ -n "$existing_pr" ]]; then
+            promotion_pr="$existing_pr"
+            echo "Promotion PR already open: #$promotion_pr"
+          else
+            promotion_url="$(gh pr create \
+              --repo "$GITHUB_REPOSITORY" \
+              --base main \
+              --head dev \
+              --title "Promote dev to main" \
+              --body "Auto-created promotion PR after successful merge to dev.")"
+            promotion_pr="${promotion_url##*/}"
+            echo "Promotion PR created: #$promotion_pr"
+          fi
+
+          gh pr merge "$promotion_pr" --squash
