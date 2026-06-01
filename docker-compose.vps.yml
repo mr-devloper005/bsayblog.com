@@ -5,6 +5,7 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    network_mode: bridge
     ports:
       - "127.0.0.1:${APP_PORT:-3020}:3000"
     healthcheck:

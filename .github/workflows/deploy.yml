@@ -113,8 +113,8 @@ jobs:
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
           port: ${{ secrets.VPS_PORT }}
-          timeout: 60s
-          command_timeout: 8m
+          timeout: 180s
+          command_timeout: 20m
           envs: APP_ENV_PRODUCTION,DEPLOY_IMAGE,REPO_NAME,GHCR_USERNAME,GHCR_TOKEN
           script: |
             set -euo pipefail
