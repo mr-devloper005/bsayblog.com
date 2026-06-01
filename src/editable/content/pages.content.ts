@@ -80,6 +80,63 @@ export const pagesContent = {
     description: 'Tell us what you are trying to publish, fix, or launch. We will route it through the right lane instead of forcing every request into the same support bucket.',
     formTitle: 'Send a message',
   },
+
+  search: {
+    metadata: {
+      title: 'Search',
+      description: 'Search posts, topics, categories, and content across the site.',
+    },
+    hero: {
+      badge: 'Search the archive',
+      title: 'Find stories, listings, visuals, and resources faster.',
+      description: 'Use keywords, categories, and content types to discover posts from every active section of the site.',
+      placeholder: 'Search by keyword, topic, category, or title',
+    },
+    resultsTitle: 'Latest searchable content',
+  },
+  create: {
+    metadata: {
+      title: 'Create',
+      description: 'Create and submit new content for the site.',
+    },
+    locked: {
+      badge: 'Creator access',
+      title: 'Login to create new content.',
+      description: 'Use your account to open the publishing workspace and create posts for the active sections of this site.',
+    },
+    hero: {
+      badge: 'Publishing workspace',
+      title: 'Create content for every active section.',
+      description: 'Choose the content type, add details, and prepare a clean post with images, links, summary, and body content.',
+    },
+    formTitle: 'Content details',
+    submitLabel: 'Submit content',
+    successTitle: 'Content submitted successfully.',
+  },
+  auth: {
+    login: {
+      metadataDescription: 'Login page for this site.',
+      badge: 'Member access',
+      title: 'Welcome back to your publishing space.',
+      description: 'Login to continue browsing, managing submissions, and creating new content from your account.',
+      formTitle: 'Login',
+      submitLabel: 'Continue',
+      noAccount: 'No account matched these details. Create an account first, then login.',
+      success: 'Login successful. Redirecting...',
+      createCta: 'Create an account',
+    },
+    signup: {
+      metadataDescription: 'Signup page for this site.',
+      badge: 'Site access',
+      title: 'Create your account and start publishing.',
+      description: 'Create an account to access the publishing workspace, save details, and submit content through the site.',
+      formTitle: 'Create account',
+      submitLabel: 'Create account',
+      passwordShort: 'Use at least 4 characters for the password.',
+      success: 'Account created successfully. Redirecting...',
+      loginCta: 'Login',
+    },
+  },
   detailPages: {
     article: {
       relatedTitle: 'Related articles',

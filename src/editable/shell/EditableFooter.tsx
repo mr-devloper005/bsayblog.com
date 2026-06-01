@@ -1,13 +1,17 @@
+'use client'
+
 import Link from 'next/link'
 import type { CSSProperties } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { globalContent } from '@/editable/content/global.content'
+import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
 export function EditableFooter() {
   const footerVars = { '--editable-footer-bg': 'var(--editable-page-bg, #fffaf3)', '--editable-footer-text': 'var(--editable-page-text, #241915)' } as CSSProperties
   const taskLinks = SITE_CONFIG.tasks.filter((task) => task.enabled)
   const year = new Date().getFullYear()
+  const { session, logout } = useEditableLocalAuthSession()
 
   return (
     <footer style={footerVars} className="border-t border-[var(--editable-border)] bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
@@ -39,9 +43,11 @@ export function EditableFooter() {
             {[
               ['About', '/about'],
               ['Contact', '/contact'],
+              ...(session ? [['Create', '/create']] : [['Login', '/login'], ['Sign up', '/signup']]),
             ].map(([label, href]) => (
               <Link key={href} href={href} className="text-sm font-bold opacity-75 hover:opacity-100">{label}</Link>
             ))}
+            {session ? <button type="button" onClick={logout} className="text-left text-sm font-bold opacity-75 hover:opacity-100">Logout</button> : null}
           </div>
         </div>
       </div>

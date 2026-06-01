@@ -50,7 +50,7 @@ jobs:
           while IFS= read -r file; do
             [ -z "$file" ] && continue
             case "$file" in
-              src/editable/*|src/editable/**|public/*|public/**|next-env.d.ts|pnpm-workspace.yaml) ;;
+              src/editable/*|src/editable/**|public/*|public/**|next-env.d.ts|pnpm-workspace.yaml|src/app/page.tsx|src/app/about/page.tsx|src/app/contact/page.tsx|src/app/login/page.tsx|src/app/signup/page.tsx|src/app/search/page.tsx|src/app/create/page.tsx|src/app/article/page.tsx|src/app/article/[slug]/page.tsx|src/app/listing/page.tsx|src/app/listing/[slug]/page.tsx|src/app/classified/page.tsx|src/app/classified/[slug]/page.tsx|src/app/image/page.tsx|src/app/image/[slug]/page.tsx|src/app/pdf/page.tsx|src/app/pdf/[slug]/page.tsx|src/app/sbm/page.tsx|src/app/sbm/[slug]/page.tsx|src/app/business-listing/page.tsx|src/app/business-listings/page.tsx|src/app/profile/page.tsx|src/app/profiles/page.tsx) ;;
               *) echo "Blocked auto-merge: non-editable file changed: $file"; disallowed=1 ;;
             esac
           done < changed-files.txt
@@ -116,4 +116,4 @@ jobs:
             echo "Promotion PR created: #$promotion_pr"
           fi
 
-          gh pr merge "$promotion_pr" --squash
+          gh pr merge "$promotion_pr" --auto --squash
