@@ -128,7 +128,7 @@ jobs:
 
             mkdir -p "$APP_ROOT"
             if [ ! -d "$APP_DIR/.git" ]; then
-              git clone "git@github.com:mr-devloper005/$REPO_NAME.git" "$APP_DIR"
+              git clone "https://x-access-token:${GHCR_TOKEN}@github.com/mr-devloper005/$REPO_NAME.git" "$APP_DIR"
             fi
 
             cd "$APP_DIR"
@@ -137,7 +137,7 @@ jobs:
             printf '\nDEPLOY_IMAGE=%s\n' "$DEPLOY_IMAGE" >> .env
             chmod 600 .env
 
-            git remote set-url origin "git@github.com:mr-devloper005/$REPO_NAME.git" 2>/dev/null || true
+            git remote set-url origin "https://x-access-token:${GHCR_TOKEN}@github.com/mr-devloper005/$REPO_NAME.git" 2>/dev/null || true
             git fetch origin main
             git checkout main
             git reset --hard origin/main
