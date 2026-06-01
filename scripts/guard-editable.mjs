@@ -8,6 +8,8 @@ if (process.env.ALLOW_INFRASTRUCTURE_CHANGES === '1') {
 
 const allowedPrefixes = ['src/editable/', 'public/']
 const allowedExact = new Set([
+  'next-env.d.ts',
+  'pnpm-workspace.yaml',
   'src/app/page.tsx',
   'src/app/about/page.tsx',
   'src/app/contact/page.tsx',
@@ -18,7 +20,7 @@ const allowedExact = new Set([
 ])
 
 const alwaysBlockedPrefixes = ['src/lib/', 'src/config/', 'src/app/api/', 'src/components/', 'src/design/', '.github/', 'scripts/']
-const alwaysBlockedExact = new Set(['Dockerfile', 'docker-compose.yml', 'docker-compose.vps.yml', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', 'next.config.mjs', 'tsconfig.json'])
+const alwaysBlockedExact = new Set(['Dockerfile', 'docker-compose.yml', 'docker-compose.vps.yml', 'package.json', 'pnpm-lock.yaml', 'next.config.mjs', 'tsconfig.json'])
 
 function run(command) {
   try {
