@@ -5,23 +5,22 @@ import './globals.css'
 import '@/editable/theme/editable-global.css'
 
 import { buildSiteMetadata } from '@/lib/seo'
-import { getFactoryState } from '@/design/factory/get-factory-state'
-import { editableRootStyle } from '@/editable/layouts/design-contract'
+import { getEditableBodyProps } from '@/editable/shell/editable-body'
 
 export async function generateMetadata(): Promise<Metadata> {
   return buildSiteMetadata()
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const { recipe, brandPack } = getFactoryState()
+  const body = getEditableBodyProps()
 
   return (
     <html lang="en">
       <body
-        data-site-shell={recipe.homeLayout}
-        data-motion-pack={recipe.motionPack}
-        className={`${brandPack.bodyClassName} ${brandPack.fontClassName} ${brandPack.paletteClassName}`}
-        style={editableRootStyle}
+        data-site-shell={body.dataSiteShell}
+        data-motion-pack={body.dataMotionPack}
+        className={body.className}
+        style={body.style}
       >
         {children}
       </body>

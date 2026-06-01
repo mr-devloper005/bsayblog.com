@@ -1,26 +1,19 @@
-import { TaskListPage } from '@/components/tasks/task-list-page'
-import { buildTaskMetadata } from '@/lib/seo'
-import { taskPageMetadata } from '@/config/site.content'
+import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
 
 export const revalidate = 3
 
-export const generateMetadata = () =>
-  buildTaskMetadata('image', {
-    path: '/image',
-    title: taskPageMetadata.image.title,
-    description: taskPageMetadata.image.description,
-  })
+export const generateMetadata = () => taskMetadata('image', '/image')
 
-export async function ImagesTaskPage({
+export async function ImagesPageTaskPage({
   searchParams,
   basePath = '/image',
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
   basePath?: string
 }) {
-  const resolved = (await searchParams) || {}
-  const page = Math.max(1, Math.floor(Number(resolved.page) || 1))
-  return <TaskListPage task="image" category={resolved.category} page={page} basePath={basePath} />
+  return <EditableTaskArchiveRoute task="image" searchParams={searchParams} basePath={basePath} />
 }
 
-export default ImagesTaskPage
+export default ImagesPageTaskPage
+
+export const ImagesTaskPage = ImagesPageTaskPage

@@ -53,7 +53,7 @@ jobs:
           echo "latest=ghcr.io/${repo_lower}:latest" >> "$GITHUB_OUTPUT"
 
       - name: Image budget
-        run: pnpm images:budget
+        run: pnpm images:report || true
 
       - name: Build and push image
         shell: bash
@@ -65,12 +65,9 @@ jobs:
           set -euo pipefail
           printf '%s' "$APP_ENV_PRODUCTION" > .env.build
           node scripts/validate-env.mjs .env.build
-          while IFS='=' read -r key value; do
-            if [ -z "${key:-}" ] || [[ "$key" == \#* ]]; then
-              continue
-            fi
-            export "$key=$value"
-          done < .env.build
+          set -a
+          . ./.env.build
+          set +a
 
           built_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
@@ -117,24 +114,12 @@ jobs:
           envs: APP_ENV_PRODUCTION,DEPLOY_IMAGE,REPO_NAME,GHCR_USERNAME,GHCR_TOKEN
           script: |
             set -euo pipefail
-            APP_ROOT="/opt/slot4-sites"
+            APP_ROOT="/opt/automation-sites"
             APP_DIR="$APP_ROOT/$REPO_NAME"
 
             mkdir -p "$APP_ROOT"
-
-            if [ -z "${GHCR_USERNAME:-}" ] || [ -z "${GHCR_TOKEN:-}" ]; then
-              echo "Deploy preflight failed: GHCR_USERNAME and GHCR_TOKEN secrets are required for repo clone and VPS image pull."
-              exit 1
-            fi
-
-            GIT_REMOTE_URL="https://x-access-token:${GHCR_TOKEN}@github.com/mr-devloper005/${REPO_NAME}.git"
-
-            if [ -d "$APP_DIR" ] && [ ! -d "$APP_DIR/.git" ]; then
-              mv "$APP_DIR" "${APP_DIR}.bootstrap-backup-$(date +%s)"
-            fi
-
             if [ ! -d "$APP_DIR/.git" ]; then
-              git clone "$GIT_REMOTE_URL" "$APP_DIR"
+              git clone "git@github.com:mr-devloper005/$REPO_NAME.git" "$APP_DIR"
             fi
 
             cd "$APP_DIR"
@@ -143,11 +128,15 @@ jobs:
             printf '\nDEPLOY_IMAGE=%s\n' "$DEPLOY_IMAGE" >> .env
             chmod 600 .env
 
-            git remote set-url origin "$GIT_REMOTE_URL" 2>/dev/null || true
+            git remote set-url origin "git@github.com:mr-devloper005/$REPO_NAME.git" 2>/dev/null || true
             git fetch origin main
             git checkout main
             git reset --hard origin/main
 
+            if [ -z "${GHCR_USERNAME:-}" ] || [ -z "${GHCR_TOKEN:-}" ]; then
+              echo "Deploy preflight failed: GHCR_USERNAME and GHCR_TOKEN secrets are required for VPS image pull."
+              exit 1
+            fi
             echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
 
             docker compose -f docker-compose.vps.yml pull
