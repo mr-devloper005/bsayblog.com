@@ -1,26 +1,19 @@
-import { TaskListPage } from '@/components/tasks/task-list-page'
-import { buildTaskMetadata } from '@/lib/seo'
-import { taskPageMetadata } from '@/config/site.content'
+import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
 
 export const revalidate = 3
 
-export const generateMetadata = () =>
-  buildTaskMetadata('pdf', {
-    path: '/pdf',
-    title: taskPageMetadata.pdf.title,
-    description: taskPageMetadata.pdf.description,
-  })
+export const generateMetadata = () => taskMetadata('pdf', '/pdf')
 
-export async function PdfTaskPage({
+export async function PdfPageTaskPage({
   searchParams,
   basePath = '/pdf',
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
   basePath?: string
 }) {
-  const resolved = (await searchParams) || {}
-  const page = Math.max(1, Math.floor(Number(resolved.page) || 1))
-  return <TaskListPage task="pdf" category={resolved.category} page={page} basePath={basePath} />
+  return <EditableTaskArchiveRoute task="pdf" searchParams={searchParams} basePath={basePath} />
 }
 
-export default PdfTaskPage
+export default PdfPageTaskPage
+
+export const PdfTaskPage = PdfPageTaskPage

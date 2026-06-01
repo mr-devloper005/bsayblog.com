@@ -93,3 +93,22 @@ Designers and AI tools should only edit:
 - `src/editable/components/**`
 
 Everything else is logic/runtime surface and should be blocked by `pnpm guard:editable:ci`.
+
+## Public repo protection
+The editable guard is not enough on its own for public repositories.
+
+Required controls:
+- Protect `dev` and `main` branches.
+- Disable direct pushes for everyone except the owner/admin path you explicitly allow.
+- Require PR checks before merge.
+- Require `CODEOWNERS` review for locked paths.
+- Keep auto-merge enabled only for PR authors with trusted association:
+  - `OWNER`
+  - `MEMBER`
+  - `COLLABORATOR`
+
+What this means:
+- Strangers can view and fork public repos.
+- Strangers can open PRs.
+- Strangers should not be able to auto-merge into `dev`.
+- Locked files should not merge without owner-controlled review.

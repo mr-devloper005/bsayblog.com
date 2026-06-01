@@ -32,6 +32,8 @@ type PostContent = {
   author?: string;
   highlights?: string[];
   logo?: string;
+  featuredImage?: string;
+  image?: string;
   images?: string[];
   latitude?: number | string;
   longitude?: number | string;
@@ -72,6 +74,12 @@ const getImageUrls = (post: SitePost, content: PostContent) => {
     : [];
   const merged = [...mediaImages, ...contentImages];
   if (merged.length) return merged;
+  const featuredImage = typeof content.featuredImage === "string" && isValidImageUrl(content.featuredImage)
+    ? content.featuredImage
+    : typeof content.image === "string" && isValidImageUrl(content.image)
+      ? content.image
+      : null;
+  if (featuredImage) return [featuredImage];
   if (isValidImageUrl(content.logo)) return [content.logo as string];
   return ["/placeholder.svg?height=900&width=1400"];
 };

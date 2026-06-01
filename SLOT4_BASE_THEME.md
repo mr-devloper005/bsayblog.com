@@ -24,5 +24,10 @@ This base theme was derived from `mysterycoder.com` and reshaped for the Slot 4 
 
 ## Next Hardening Pass
 - Move shared page copy out of route logic and into `src/editable/content/*` per page.
-- Add CI rules so UI PRs can only modify `src/editable/**` and selected public assets.
-- Add CODEOWNERS + auto-merge rules for `dev` once protected path checks are in place.
+- Keep CI rules so UI PRs can only modify `src/editable/**` and selected public assets.
+- Auto-merge to `dev` now needs a trusted GitHub association:
+  - `OWNER`
+  - `MEMBER`
+  - `COLLABORATOR`
+- Public repos are safe only if branch protection is also enabled on `dev` and `main`.
+- `CODEOWNERS` should stay active so locked paths cannot move without owner review.
