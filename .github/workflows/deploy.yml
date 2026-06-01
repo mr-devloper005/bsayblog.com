@@ -13,6 +13,10 @@ concurrency:
   group: deploy-${{ github.repository }}
   cancel-in-progress: true
 
+env:
+  MAX_PUBLIC_IMAGE_KB: 5000
+  MAX_PUBLIC_ICON_KB: 5000
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -53,7 +57,7 @@ jobs:
           echo "latest=ghcr.io/${repo_lower}:latest" >> "$GITHUB_OUTPUT"
 
       - name: Image budget
-        run: pnpm images:report || true
+        run: pnpm images:budget
 
       - name: Build and push image
         shell: bash
