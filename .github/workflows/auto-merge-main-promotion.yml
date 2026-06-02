@@ -24,9 +24,13 @@ jobs:
 
       - name: Enable auto-merge for dev to main promotion PR
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SLOT4_AUTOMATION_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         shell: bash
         run: |
           set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "SLOT4_AUTOMATION_TOKEN secret is required."
+            exit 1
+          fi
           gh pr merge "$PR_NUMBER" --auto --squash

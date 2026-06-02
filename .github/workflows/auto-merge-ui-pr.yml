@@ -40,7 +40,7 @@ jobs:
 
       - name: Verify PR only touches editable surface
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SLOT4_AUTOMATION_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         shell: bash
         run: |
@@ -58,11 +58,16 @@ jobs:
 
       - name: Merge safe PR to dev, then promote dev to main
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SLOT4_AUTOMATION_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         shell: bash
         run: |
           set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "SLOT4_AUTOMATION_TOKEN secret is required."
+            exit 1
+          fi
 
           for attempt in {1..60}; do
             checks_json="$(gh pr checks "$PR_NUMBER" --json name,state,bucket)"

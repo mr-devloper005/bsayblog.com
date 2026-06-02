@@ -29,10 +29,15 @@ jobs:
 
       - name: Create/reuse and auto-merge dev to main PR
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.SLOT4_AUTOMATION_TOKEN }}
         shell: bash
         run: |
           set -euo pipefail
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "SLOT4_AUTOMATION_TOKEN secret is required."
+            exit 1
+          fi
 
           ahead_by="$(gh api "repos/${GITHUB_REPOSITORY}/compare/main...dev" --jq '.ahead_by')"
           if [[ "$ahead_by" == "0" ]]; then
