@@ -1,153 +1,55 @@
 import { slot4BrandConfig } from './brand.config'
 
-export type Slot4VisualPreset =
-  | 'editorial-paper'
-  | 'luxury-atelier'
-  | 'brutalist-index'
-  | 'organic-journal'
-  | 'tech-directory'
-  | 'retro-bulletin'
-  | 'visual-gallery'
+export type Slot4VisualPreset = 'classic-news'
 
 export const visualPresets = {
-  'editorial-paper': {
-    label: 'Editorial Paper',
-    mood: 'calm magazine authority',
-    fontDirection: 'serif headlines with quiet sans body',
+  'classic-news': {
+    label: 'Classic News',
+    mood: 'compact article newsroom',
+    fontDirection: 'bold sans headlines with quiet body copy',
     colors: {
-      background: '#f7efe3',
-      foreground: '#201711',
-      muted: '#7b6253',
-      primary: '#261811',
-      accent: '#b76e45',
-      surface: '#fffaf2',
-    },
-    shape: 'soft editorial cards with fine borders',
-  },
-  'luxury-atelier': {
-    label: 'Luxury Atelier',
-    mood: 'premium, restrained, polished',
-    fontDirection: 'high-contrast display headings with spacious tracking',
-    colors: {
-      background: '#0f1110',
-      foreground: '#f6ead8',
-      muted: '#b8aa94',
-      primary: '#d7b56d',
-      accent: '#7f1d1d',
-      surface: '#181a17',
-    },
-    shape: 'large dark panels, gold hairlines, generous negative space',
-  },
-  'brutalist-index': {
-    label: 'Brutalist Index',
-    mood: 'bold, raw, memorable',
-    fontDirection: 'condensed headings, mono labels, hard rhythm',
-    colors: {
-      background: '#f2f0e8',
-      foreground: '#111111',
-      muted: '#55524a',
-      primary: '#111111',
-      accent: '#ff4d00',
+      background: '#f5f5f3',
+      foreground: '#0d0d0d',
+      muted: '#666666',
+      primary: '#0b0b0b',
+      accent: '#ef2b2d',
       surface: '#ffffff',
     },
-    shape: 'sharp edges, thick borders, offset blocks',
-  },
-  'organic-journal': {
-    label: 'Organic Journal',
-    mood: 'warm, natural, trustworthy',
-    fontDirection: 'rounded serif or humanist sans with soft captions',
-    colors: {
-      background: '#f4efe5',
-      foreground: '#263021',
-      muted: '#68705a',
-      primary: '#415b32',
-      accent: '#c47c51',
-      surface: '#fffaf0',
-    },
-    shape: 'rounded cards, natural spacing, calm texture',
-  },
-  'tech-directory': {
-    label: 'Tech Directory',
-    mood: 'clean, fast, useful',
-    fontDirection: 'modern sans with crisp mono data accents',
-    colors: {
-      background: '#f6f9fc',
-      foreground: '#101827',
-      muted: '#5f6b7a',
-      primary: '#0f172a',
-      accent: '#00a6ff',
-      surface: '#ffffff',
-    },
-    shape: 'clean grids, pill filters, sharp information hierarchy',
-  },
-  'retro-bulletin': {
-    label: 'Retro Bulletin',
-    mood: 'playful, local, energetic',
-    fontDirection: 'chunky headings with friendly body type',
-    colors: {
-      background: '#fff3c4',
-      foreground: '#2b1d12',
-      muted: '#7b5736',
-      primary: '#2b1d12',
-      accent: '#e85d2a',
-      surface: '#fff8da',
-    },
-    shape: 'stickers, tabs, framed modules, playful dividers',
-  },
-  'visual-gallery': {
-    label: 'Visual Gallery',
-    mood: 'cinematic, image-led, immersive',
-    fontDirection: 'minimal sans with oversized display moments',
-    colors: {
-      background: '#07101f',
-      foreground: '#f8fbff',
-      muted: '#a9b6c8',
-      primary: '#8df0c8',
-      accent: '#f2a0ff',
-      surface: '#101b2d',
-    },
-    shape: 'dark cards, large media, glass overlays',
+    shape: 'square editorial modules with fine dividers',
   },
 } as const
 
 export const visualSystem = {
   productKind: slot4BrandConfig.productKind,
-  recommendedPreset:
-    slot4BrandConfig.productKind === 'visual'
-      ? 'visual-gallery'
-      : slot4BrandConfig.productKind === 'editorial'
-        ? 'editorial-paper'
-        : slot4BrandConfig.productKind === 'directory'
-          ? 'tech-directory'
-          : 'organic-journal',
+  recommendedPreset: 'classic-news',
   radius: {
-    sm: '0.75rem',
-    md: '1.25rem',
-    lg: '2rem',
-    xl: '2.75rem',
+    sm: '0.125rem',
+    md: '0.25rem',
+    lg: '0.5rem',
+    xl: '0.75rem',
   },
   motion: {
-    pageLoad: 'animate-in fade-in slide-in-from-bottom-4 duration-700',
-    cardHover: 'transition duration-300 hover:-translate-y-1 hover:shadow-xl',
-    softHover: 'transition duration-300 hover:opacity-85',
+    pageLoad: 'animate-in fade-in slide-in-from-bottom-2 duration-500',
+    cardHover: 'transition duration-200 hover:-translate-y-0.5 hover:shadow-lg',
+    softHover: 'transition duration-200 hover:opacity-85',
     reduceMotionSafe: 'motion-reduce:transform-none motion-reduce:transition-none',
   },
   typography: {
-    eyebrow: 'text-xs font-semibold uppercase tracking-[0.24em]',
-    heroTitle: 'text-5xl font-semibold tracking-[-0.06em] sm:text-6xl lg:text-7xl',
-    sectionTitle: 'text-3xl font-semibold tracking-[-0.04em] sm:text-4xl',
-    body: 'text-base leading-8',
-    caption: 'text-xs font-medium uppercase tracking-[0.18em]',
+    eyebrow: 'text-[11px] font-black uppercase tracking-[0.16em]',
+    heroTitle: 'text-3xl font-black tracking-normal sm:text-4xl lg:text-5xl',
+    sectionTitle: 'text-xl font-black tracking-normal sm:text-2xl',
+    body: 'text-base leading-7',
+    caption: 'text-[11px] font-bold uppercase tracking-[0.14em]',
   },
   surfaces: {
-    glass: 'border border-white/15 bg-white/10 backdrop-blur-xl',
-    paper: 'border border-black/10 bg-white shadow-[0_24px_70px_rgba(15,23,42,0.08)]',
+    glass: 'border border-black/10 bg-white/90',
+    paper: 'border border-black/10 bg-white shadow-sm',
     quiet: 'border border-black/10 bg-black/[0.03]',
-    dark: 'border border-white/10 bg-black/30 shadow-[0_24px_70px_rgba(0,0,0,0.25)]',
+    dark: 'border border-white/10 bg-[#0b0b0b] text-white',
   },
   layout: {
-    page: 'mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8',
-    sectionY: 'py-12 sm:py-16 lg:py-20',
+    page: 'mx-auto w-full max-w-7xl max-w-[var(--editable-container)] px-4 sm:px-6',
+    sectionY: 'py-10 sm:py-12 lg:py-14',
     cardGrid: 'grid gap-5 sm:grid-cols-2 lg:grid-cols-3',
   },
 } as const
