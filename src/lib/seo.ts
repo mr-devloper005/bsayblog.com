@@ -160,7 +160,7 @@ const buildRobots = (index: boolean, follow: boolean): Metadata["robots"] => ({
 
 const fetchRuntimeSeoConfig = async (): Promise<RuntimeSeoConfig | null> => {
   try {
-    const bootstrap = await fetchSiteBootstrap({ fresh: true });
+    const bootstrap = await fetchSiteBootstrap();
     return parseSeoConfig(bootstrap?.site?.config);
   } catch (error) {
     if (process.env.NODE_ENV !== "production") {
