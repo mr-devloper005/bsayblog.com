@@ -14,12 +14,12 @@ export function EditableFooter() {
             {globalContent.site.logo ? (
               <img
                 src={globalContent.site.logo}
-                alt={`${globalContent.site.name} logo`}
+                alt={`${globalContent.site.displayName} logo`}
                 className="h-14 w-14 min-w-[3.5rem] rounded-sm border border-white/20 bg-white/95 object-contain"
               />
             ) : null}
             <div>
-              <span className="block text-4xl font-black uppercase leading-none">{globalContent.site.name}</span>
+              <span className="block text-4xl font-black uppercase leading-none">{globalContent.site.displayName}</span>
               <span className="block text-lg italic text-white/40">{globalContent.footer.tagline}</span>
             </div>
           </Link>

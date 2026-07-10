@@ -42,11 +42,12 @@ const getField = (post: SitePost, keys: string[]) => {
   return ''
 }
 
-const getImages = (post: SitePost) => {
+const getImages = (post: SitePost, options: { includeLogo?: boolean } = {}) => {
   const content = getContent(post)
   const media = Array.isArray(post.media) ? post.media.map((item) => item?.url).filter((url): url is string => typeof url === 'string' && isUrl(url)) : []
   const images = Array.isArray(content.images) ? content.images.filter((url): url is string => typeof url === 'string' && isUrl(url)) : []
-  const singleImages = ['image', 'featuredImage', 'thumbnail', 'logo', 'avatar'].map((key) => asText(content[key])).filter((url) => url && isUrl(url))
+  const singleImageKeys = options.includeLogo ? ['image', 'featuredImage', 'thumbnail', 'logo', 'avatar'] : ['image', 'featuredImage', 'thumbnail', 'avatar']
+  const singleImages = singleImageKeys.map((key) => asText(content[key])).filter((url) => url && isUrl(url))
   return [...media, ...images, ...singleImages].filter(Boolean).slice(0, 12)
 }
 
@@ -190,7 +191,7 @@ function ArticleDetail({ post, related, comments }: { post: SitePost; related: S
 }
 
 function ListingDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
-  const images = getImages(post)
+  const images = getImages(post, { includeLogo: true })
   const logo = images[0]
   const address = getField(post, ['address', 'location', 'city'])
   const phone = getField(post, ['phone', 'telephone', 'mobile'])
