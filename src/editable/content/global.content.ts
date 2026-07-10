@@ -1,6 +1,8 @@
 import { slot4BrandConfig } from '@/editable/theme/brand.config'
 import { CATEGORY_OPTIONS } from '@/lib/categories'
 
+const siteDisplayName = slot4BrandConfig.siteName.replace(/\.com$/i, '')
+
 const footerTopics = CATEGORY_OPTIONS.slice(0, 4).map((category) => ({
   label: category.name,
   href: `/article?category=${category.slug}`,
@@ -9,6 +11,7 @@ const footerTopics = CATEGORY_OPTIONS.slice(0, 4).map((category) => ({
 export const globalContent = {
   site: {
     name: slot4BrandConfig.siteName,
+    displayName: siteDisplayName,
     tagline: slot4BrandConfig.tagline || 'Independent article newsroom',
     domain: slot4BrandConfig.domain,
     baseUrl: slot4BrandConfig.baseUrl,
