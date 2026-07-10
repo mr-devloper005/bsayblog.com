@@ -24,19 +24,21 @@ const getContent = (post: SitePost) => post.content && typeof post.content === '
 const asText = (value: unknown) => typeof value === 'string' ? value.trim() : ''
 const isUrl = (value: string) => value.startsWith('/') || /^https?:\/\//i.test(value)
 
-const getImages = (post: SitePost) => {
+const getImages = (post: SitePost, options: { includeLogo?: boolean } = {}) => {
   const content = getContent(post)
   const media = Array.isArray(post.media) ? post.media.map((item) => item?.url).filter((url): url is string => typeof url === 'string' && isUrl(url)) : []
   const images = Array.isArray(content.images) ? content.images.filter((url): url is string => typeof url === 'string' && isUrl(url)) : []
   const image = asText(content.image) || asText(content.featuredImage) || asText(content.thumbnail)
   const logo = asText(content.logo)
-  return [...media, ...images, ...(isUrl(image) ? [image] : []), ...(isUrl(logo) ? [logo] : [])].filter(Boolean).slice(0, 8)
+  return [...media, ...images, ...(isUrl(image) ? [image] : []), ...(options.includeLogo && isUrl(logo) ? [logo] : [])].filter(Boolean).slice(0, 8)
 }
 
 const placeholder = '/placeholder.svg?height=900&width=1200'
 const getImage = (post: SitePost) => getImages(post)[0] || placeholder
+const getImageKey = (image: string) => image.trim().replace(/[?#].*$/, '').replace(/\/$/, '').toLowerCase()
 const getCategory = (post: SitePost, fallback: string) => asText(getContent(post).category) || post.tags?.[0] || fallback
-const getSummary = (post: SitePost) => post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body)
+const toPlainText = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+const getSummary = (post: SitePost) => toPlainText(post.summary || asText(getContent(post).description) || asText(getContent(post).excerpt) || asText(getContent(post).body))
 const getField = (post: SitePost, keys: string[]) => {
   const content = getContent(post)
   for (const key of keys) {
@@ -91,6 +93,13 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   const Icon = deck.icon
   const archiveVars = { '--archive-bg': preset.colors.background, '--archive-text': preset.colors.foreground, '--archive-surface': preset.colors.surface, '--archive-accent': preset.colors.accent } as CSSProperties
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
+  const seenProfileImages = new Set<string>()
+  const visiblePosts = posts.map((post) => {
+    const imageKey = task === 'profile' ? getImageKey(getImages(post)[0] || '') : ''
+    const showProfileImage = !imageKey || !seenProfileImages.has(imageKey)
+    if (imageKey && showProfileImage) seenProfileImages.add(imageKey)
+    return { post, showProfileImage }
+  })
 
   return (
     <EditableSiteShell>
@@ -121,7 +130,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
         <section className="mx-auto max-w-[var(--editable-container)] px-4 pb-16 sm:px-6 lg:px-8">
           {posts.length ? (
             <div className={task === 'article' ? 'grid gap-0' : deck.archiveClass}>
-              {posts.map((post, index) => <ArchivePostCard key={post.id || post.slug} post={post} task={task} basePath={basePath} index={index} />)}
+              {visiblePosts.map(({ post, showProfileImage }, index) => <ArchivePostCard key={post.id || post.slug} post={post} task={task} basePath={basePath} index={index} showProfileImage={showProfileImage} />)}
             </div>
           ) : (
             <div className="border border-dashed border-[var(--editable-border)] bg-white p-10 text-center">
@@ -142,14 +151,14 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   )
 }
 
-function ArchivePostCard({ post, task, basePath, index }: { post: SitePost; task: TaskKey; basePath: string; index: number }) {
+function ArchivePostCard({ post, task, basePath, index, showProfileImage = true }: { post: SitePost; task: TaskKey; basePath: string; index: number; showProfileImage?: boolean }) {
   const href = `${basePath}/${post.slug}` || buildPostUrl(task, post.slug)
   if (task === 'listing') return <ListingArchiveCard post={post} href={href} />
   if (task === 'classified') return <ClassifiedArchiveCard post={post} href={href} />
   if (task === 'image') return <ImageArchiveCard post={post} href={href} index={index} />
   if (task === 'sbm') return <BookmarkArchiveCard post={post} href={href} index={index} />
   if (task === 'pdf') return <PdfArchiveCard post={post} href={href} />
-  if (task === 'profile') return <ProfileArchiveCard post={post} href={href} />
+  if (task === 'profile') return <ProfileArchiveCard post={post} href={href} showImage={showProfileImage} />
   return <ArticleArchiveCard post={post} href={href} index={index} />
 }
 
@@ -173,7 +182,7 @@ function ArticleArchiveCard({ post, href, index }: { post: SitePost; href: strin
 }
 
 function ListingArchiveCard({ post, href }: { post: SitePost; href: string }) {
-  const logo = getImages(post)[0]
+  const logo = getImages(post, { includeLogo: true })[0]
   const location = getField(post, ['location', 'address', 'city'])
   const phone = getField(post, ['phone', 'telephone', 'mobile'])
   const website = getField(post, ['website', 'url'])
@@ -267,8 +276,8 @@ function PdfArchiveCard({ post, href }: { post: SitePost; href: string }) {
   )
 }
 
-function ProfileArchiveCard({ post, href }: { post: SitePost; href: string }) {
-  const avatar = getImages(post)[0]
+function ProfileArchiveCard({ post, href, showImage }: { post: SitePost; href: string; showImage: boolean }) {
+  const avatar = showImage ? getImages(post)[0] : ''
   const role = getField(post, ['role', 'designation', 'company', 'location'])
   return (
     <Link href={href} className="group rounded-[2rem] border border-[var(--editable-border)] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl">

@@ -50,12 +50,12 @@ export function EditableNavbar() {
           {globalContent.site.logo ? (
             <img
               src={globalContent.site.logo}
-              alt={`${globalContent.site.name} logo`}
+              alt={`${globalContent.site.displayName} logo`}
               className="h-10 w-10 min-w-[2.5rem] rounded-sm border border-black/10 bg-white object-contain"
             />
           ) : null}
           <span className="min-w-0">
-            <span className="block truncate text-2xl font-black uppercase leading-none tracking-normal sm:text-3xl">{globalContent.site.name}</span>
+            <span className="block truncate text-2xl font-black uppercase leading-none tracking-normal sm:text-3xl">{globalContent.site.displayName}</span>
             <span className="block truncate text-[11px] font-medium italic text-neutral-500">{globalContent.nav.tagline}</span>
           </span>
         </Link>
@@ -107,12 +107,12 @@ export function EditableNavbar() {
                 {globalContent.site.logo ? (
                   <img
                     src={globalContent.site.logo}
-                    alt={`${globalContent.site.name} logo`}
+                    alt={`${globalContent.site.displayName} logo`}
                     className="h-10 w-10 min-w-[2.5rem] rounded-sm border border-black/10 bg-white object-contain"
                   />
                 ) : null}
                 <div>
-                  <span className="block text-3xl font-black uppercase leading-none">{globalContent.site.name}</span>
+                  <span className="block text-3xl font-black uppercase leading-none">{globalContent.site.displayName}</span>
                   <span className="block text-[11px] font-medium italic text-neutral-500">{globalContent.nav.tagline}</span>
                 </div>
               </Link>
