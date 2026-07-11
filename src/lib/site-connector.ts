@@ -155,3 +155,34 @@ export async function fetchSiteFeed<TPost = SitePost>(
   }
   return fetchPublicJson<SiteFeed<TPost>>(`/feed?${params.toString()}`, options);
 }
+
+export type SiteAd = {
+  id: string;
+  name: string;
+  imageUrl: string;
+  mediaType?: "image" | "video" | string;
+  linkUrl: string;
+  altText?: string | null;
+  openInNewTab?: boolean;
+  slot: string;
+  width?: number | null;
+  height?: number | null;
+  priority?: number;
+  weight?: number;
+  durationMs?: number | null;
+};
+
+/**
+ * Fetch ads targeted to this site (by SITE_CODE) from the Master Panel.
+ * Targeting / scheduling / ordering is resolved server-side. Pass a `slot` to
+ * scope to one placement (e.g. "sidebar"). Returns [] on any error/misconfig.
+ */
+export async function fetchSiteAds(
+  slot?: string,
+  options?: { fresh?: boolean; timeoutMs?: number }
+): Promise<SiteAd[]> {
+  const safeSlot = typeof slot === "string" ? slot.trim() : "";
+  const path = safeSlot ? `/ads?slot=${encodeURIComponent(safeSlot)}` : "/ads";
+  const ads = await fetchPublicJson<SiteAd[]>(path, options);
+  return Array.isArray(ads) ? ads : [];
+}
