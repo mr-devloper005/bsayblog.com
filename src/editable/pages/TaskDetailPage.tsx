@@ -334,7 +334,7 @@ function PdfDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
 }
 
 function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] }) {
-  const images = getImages(post)
+  const images = getImages(post, { includeLogo: true })
   const heroImage = images[1] || images[0] || '/placeholder.svg?height=900&width=1200'
   const avatar = images[0]
   const content = getContent(post)
@@ -433,15 +433,7 @@ function buildDiscoverItems(post: SitePost) {
 function ArticleDetailActions({ comments }: { slug: string; comments: number }) {
   return (
     <div className="flex items-center gap-3">
-      <ArticleActionPill icon={Eye} label="35" />
-      <ArticleActionPill icon={Heart} />
-      <ArticleActionPill icon={MessageSquare} label={String(comments)} />
-      <button className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white" aria-label="Share article">
-        <Share2 className="h-4 w-4" />
-      </button>
-      <button className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white" aria-label="More options">
-        <MoreHorizontal className="h-4 w-4" />
-      </button>
+      
     </div>
   )
 }
