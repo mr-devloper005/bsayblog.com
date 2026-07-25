@@ -95,7 +95,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
   const seenProfileImages = new Set<string>()
   const visiblePosts = posts.map((post) => {
-    const imageKey = task === 'profile' ? getImageKey(getImages(post)[0] || '') : ''
+    const imageKey = task === 'profile' ? getImageKey(getImages(post, { includeLogo: true })[0] || '') : ''
     const showProfileImage = !imageKey || !seenProfileImages.has(imageKey)
     if (imageKey && showProfileImage) seenProfileImages.add(imageKey)
     return { post, showProfileImage }
@@ -277,7 +277,7 @@ function PdfArchiveCard({ post, href }: { post: SitePost; href: string }) {
 }
 
 function ProfileArchiveCard({ post, href, showImage }: { post: SitePost; href: string; showImage: boolean }) {
-  const avatar = showImage ? getImages(post)[0] : ''
+  const avatar = showImage ? getImages(post, { includeLogo: true })[0] : ''
   const role = getField(post, ['role', 'designation', 'company', 'location'])
   return (
     <Link href={href} className="group rounded-[2rem] border border-[var(--editable-border)] bg-white p-6 text-center shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
