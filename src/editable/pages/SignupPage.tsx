@@ -20,7 +20,7 @@ export default function SignupPage() {
 
   return (
     <EditableSiteShell>
-      <main className="bg-[#0b0b0b] text-white">
+      <main className="bg-[var(--slot4-dark-bg)] text-white">
         <section className="mx-auto grid min-h-[calc(100vh-10rem)] max-w-[var(--editable-container)] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[360px_minmax(0,1fr)] lg:items-center">
           <div className="border border-white/12 bg-white/[0.06] p-6">
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-white/50">{globalContent.site.name}</p>

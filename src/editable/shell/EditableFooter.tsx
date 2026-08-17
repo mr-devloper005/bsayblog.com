@@ -1,13 +1,11 @@
 import Link from 'next/link'
-import type { CSSProperties } from 'react'
 import { globalContent } from '@/editable/content/global.content'
 
 export function EditableFooter() {
-  const footerVars = { '--editable-footer-bg': '#0b0b0b', '--editable-footer-text': '#ffffff' } as CSSProperties
   const year = new Date().getFullYear()
 
   return (
-    <footer style={footerVars} className="bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
+    <footer className="bg-[var(--slot4-dark-bg)] text-[var(--slot4-dark-text)]">
       <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
         <div>
           <Link href="/" className="inline-flex items-center gap-4">
@@ -15,7 +13,7 @@ export function EditableFooter() {
               <img
                 src={globalContent.site.logo}
                 alt={`${globalContent.site.displayName} logo`}
-                className="h-14 w-14 min-w-[3.5rem] rounded-sm border border-white/20 bg-white/95 object-contain"
+                className="h-14 w-14 min-w-[3.5rem] object-contain"
               />
             ) : null}
             <div>
