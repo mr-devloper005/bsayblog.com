@@ -13,7 +13,7 @@ export default function AboutPage() {
 
   return (
     <EditableSiteShell>
-      <main className="bg-white text-black">
+      <main className="bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
         <section className="mx-auto max-w-[var(--editable-container)] px-4 py-10 sm:px-6">
           <div className="border-b border-black/12 pb-8">
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--slot4-accent-fill)]">{pagesContent.about.badge}</p>
@@ -36,7 +36,7 @@ export default function AboutPage() {
               </div>
             </article>
 
-            <aside className="bg-[#0b0b0b] p-5 text-white">
+            <aside className="bg-[var(--slot4-dark-bg)] p-5 text-white">
               <p className="text-[11px] font-black uppercase tracking-[0.16em] text-white/50">{globalContent.site.name}</p>
               <h2 className="mt-2 text-2xl font-black">What guides us</h2>
               <div className="mt-6 grid gap-5">
