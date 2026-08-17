@@ -81,7 +81,7 @@ export function EditableHomeHero({ primaryTask, primaryRoute, posts }: HomeSecti
   if (!lead) return null
 
   return (
-    <section className="bg-white">
+    <section className="bg-[var(--slot4-surface-bg)]">
       <div className="mx-auto grid max-w-[var(--editable-container)] gap-6 px-4 py-8 sm:px-6 lg:grid-cols-[225px_minmax(0,1fr)_240px]">
         <aside className="min-w-0">
           <SectionTitle>{pagesContent.home.hero.badge}</SectionTitle>
@@ -115,7 +115,7 @@ export function EditableStoryRail({ primaryTask, primaryRoute, posts }: HomeSect
   const picks = posts.slice(2, 7)
   if (!picks.length) return null
   return (
-    <section className="bg-[#0b0b0b] py-10 text-white">
+    <section className="bg-[var(--slot4-dark-bg)] py-10 text-white">
       <div className="mx-auto max-w-[var(--editable-container)] px-4 sm:px-6">
         <SectionTitle dark>Hand-picked articles</SectionTitle>
         <div className="mt-6 grid gap-2 md:grid-cols-2">
@@ -136,9 +136,9 @@ export function EditableMagazineSplit({ primaryTask, primaryRoute, posts }: Home
   const leadPair = posts.slice(5, 7)
   if (!watched.length) return null
   return (
-    <section className="bg-white py-10">
+    <section className="bg-[var(--slot4-warm)] py-10">
       <div className="mx-auto grid max-w-[var(--editable-container)] gap-6 px-4 sm:px-6 lg:grid-cols-[285px_minmax(0,1fr)]">
-        <aside className="bg-neutral-100 p-5">
+        <aside className="bg-[var(--slot4-gray)] p-5">
           <SectionTitle>Most watched</SectionTitle>
           <SmallList posts={watched} route={primaryRoute} task={primaryTask} />
         </aside>
@@ -164,7 +164,7 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
     : ['Social', 'Sports', 'Arts', 'Economy', 'International', 'National'].map((title, index) => ({ title, posts: fallback.slice(index * 4, index * 4 + 4) }))
 
   return (
-    <section className="bg-white pb-12">
+    <section className="bg-[var(--slot4-surface-bg)] pb-12">
       <div className="mx-auto max-w-[var(--editable-container)] px-4 sm:px-6">
         <div className="grid gap-x-7 gap-y-10 md:grid-cols-2 lg:grid-cols-3">
           {lanes.filter((lane) => lane.posts.length).map((lane) => {
@@ -179,8 +179,8 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
           })}
         </div>
 
-        <div className="mt-12 grid gap-4 bg-neutral-100 p-5 md:grid-cols-[280px_minmax(0,1fr)]">
-          <div className="bg-black p-5 text-white">
+        <div className="mt-12 grid gap-4 bg-[var(--slot4-gray)] p-5 md:grid-cols-[280px_minmax(0,1fr)]">
+          <div className="bg-[var(--slot4-dark-bg)] p-5 text-white">
             <SectionTitle dark>Reader search</SectionTitle>
             <p className="mt-5 text-sm font-medium leading-7 text-white/75">{pagesContent.home.hero.description}</p>
           </div>
@@ -196,7 +196,7 @@ export function EditableTimeCollections({ primaryTask, primaryRoute, posts, time
 
 export function EditableHomeCta() {
   return (
-    <section className="bg-white pb-12">
+    <section className="bg-[var(--slot4-page-bg)] pb-12">
       <div className="mx-auto max-w-[var(--editable-container)] px-4 sm:px-6">
         <div className="border-y border-black/12 py-8 text-center">
           <p className={dc.type.eyebrow}><span className="mr-2 inline-block h-2 w-2 bg-[var(--slot4-accent-fill)]" />{pagesContent.home.cta.badge}</p>

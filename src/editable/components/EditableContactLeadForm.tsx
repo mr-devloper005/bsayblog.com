@@ -34,7 +34,7 @@ export function EditableContactLeadForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border border-[var(--editable-border)] bg-white p-5 shadow-sm md:p-6">
+    <form onSubmit={handleSubmit} className="border border-black/[0.09] bg-white p-5 shadow-sm md:p-6">
       <div className="grid gap-4 md:grid-cols-2">
         <Field name="name" label="Full name" placeholder="Your name" required />
         <Field name="email" type="email" label="Email address" placeholder="you@example.com" required />
@@ -45,7 +45,7 @@ export function EditableContactLeadForm() {
       </div>
       <label className="mt-4 grid gap-2 text-sm font-black opacity-75">
         Message
-        <textarea name="message" required rows={6} placeholder="Tell us about the article, correction, or editorial request..." className="w-full min-w-0 border border-[var(--editable-border)] bg-white px-4 py-3 text-base font-medium outline-none transition focus:border-black" />
+        <textarea name="message" required rows={6} placeholder="Tell us about the article, correction, or editorial request..." className="w-full min-w-0 border border-black/[0.09] bg-white px-4 py-3 text-base font-medium outline-none transition focus:border-black" />
       </label>
       <input name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
       {message ? (
@@ -66,7 +66,7 @@ function Field({ name, label, type = 'text', placeholder, required = false }: { 
   return (
     <label className="grid gap-2 text-sm font-black opacity-75">
       {label}
-      <input name={name} type={type} required={required} placeholder={placeholder} className="w-full min-w-0 h-12 border border-[var(--editable-border)] bg-white px-4 text-base font-medium outline-none transition focus:border-black" />
+      <input name={name} type={type} required={required} placeholder={placeholder} className="w-full min-w-0 h-12 border border-black/[0.09] bg-white px-4 text-base font-medium outline-none transition focus:border-black" />
     </label>
   )
 }

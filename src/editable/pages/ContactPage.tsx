@@ -16,7 +16,7 @@ export default function ContactPage() {
 
   return (
     <EditableSiteShell>
-      <main className="bg-white text-black">
+      <main className="bg-[var(--slot4-page-bg)] text-[var(--slot4-page-text)]">
         <section className="mx-auto grid max-w-[var(--editable-container)] gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[minmax(0,1fr)_380px]">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--slot4-accent-fill)]">{pagesContent.contact.eyebrow}</p>
@@ -33,8 +33,8 @@ export default function ContactPage() {
             </div>
           </div>
 
-          <div className="border border-black/10 bg-neutral-100 p-6">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-neutral-500">{globalContent.site.name}</p>
+          <div className="border border-black/[0.09] bg-[var(--slot4-gray)] p-6">
+            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[var(--slot4-muted-text)]">{globalContent.site.name}</p>
             <h2 className="mt-2 text-2xl font-black">{pagesContent.contact.formTitle}</h2>
             <EditableContactLeadForm />
           </div>
